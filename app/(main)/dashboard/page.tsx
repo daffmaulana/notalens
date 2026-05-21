@@ -3,10 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useNav } from '@/app/components/AppLayout'
 import { logout } from '@/lib/auth'
-<<<<<<< HEAD
-=======
 import { useTheme } from '@/context/ThemeContext'
->>>>>>> main
 
 interface Activity {
   name: string; date: string; amount: string; neg: boolean; income: boolean; svg: string
@@ -33,16 +30,14 @@ const DashboardPage: React.FC = () => {
   const textPrimary = darkMode ? '#f1f5f9' : '#0a1a3a'
   const textSecondary = darkMode ? '#94a3b8' : '#7a90b0'
   const borderColor = darkMode ? '#334155' : '#dce3ef'
+  const actionText = darkMode ? '#e2e8f0' : '#0D307F'
+  const actionIcon = darkMode ? '#7aa5f5' : '#0D307F'
 
   const handleActionPress = (label: string) => {
     setPressedAction(label)
     setTimeout(() => setPressedAction(null), 180)
   }
 
-  const handleLogout = async () => {
-  await logout()
-  router.push('/')
-}
   function getGreeting() {
     const hour = new Date().getHours()
     if (hour >= 5 && hour < 12) return 'Good Morning'
@@ -66,13 +61,14 @@ const DashboardPage: React.FC = () => {
     { label: 'Scan', route: '/scan', svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="3" height="3" fill="currentColor"></rect><rect x="14" y="7" width="3" height="3" fill="currentColor"></rect><rect x="7" y="14" width="3" height="3" fill="currentColor"></rect><rect x="14" y="14" width="3" height="3" fill="currentColor"></rect></svg>` },
     { label: 'Workspace', route: '/workspace', svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
     { label: 'Recap', route: '/recap', svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M16 13H8"></path><path d="M16 17H8"></path><path d="M10 9H8"></path></svg>` },
-    { label: 'Settings', route: '/settings', svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9z"></path></svg>` },
+    { label: 'Settings', route: '/settings', svg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>` },
   ]
 
   const chartBars = [35, 60, 42, 85, 58, 75, 48]
 
   return (
     <div style={{ background: bg, minHeight: '100%', transition: 'background 0.3s' }}>
+
       {/* Greeting */}
       <div style={{ marginBottom: '14px' }}>
         <p style={{ fontSize: '11px', color: textSecondary, margin: '0 0 2px', fontWeight: 500 }}>
@@ -133,8 +129,8 @@ const DashboardPage: React.FC = () => {
                 transform: pressedAction === action.label ? 'scale(0.94)' : 'scale(1)',
                 transition: 'transform 0.15s ease, background 0.15s ease',
               }}>
-              <span style={{ color: '#0D307F', flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: action.svg }} />
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#0D307F' }}>{action.label}</span>
+              <span style={{ color: actionIcon, flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: action.svg }} />
+              <span style={{ fontSize: '12px', fontWeight: 700, color: actionText }}>{action.label}</span>
             </button>
           ))}
         </div>
@@ -146,7 +142,7 @@ const DashboardPage: React.FC = () => {
           <p style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '1.5px', color: textSecondary, margin: 0, textTransform: 'uppercase' }}>
             Recent Activity
           </p>
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#0D307F', cursor: 'pointer' }}>View All</span>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: darkMode ? '#7aa5f5' : '#0D307F', cursor: 'pointer' }}>View All</span>
         </div>
         {activities.map((item, i) => (
           <div key={i} style={{
@@ -157,9 +153,11 @@ const DashboardPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div style={{
                 width: '36px', height: '36px',
-                background: item.income ? '#e0f8ee' : (darkMode ? '#1e3a5f' : '#eaf0fb'),
+                background: item.income ? (darkMode ? '#1a3a2a' : '#e0f8ee') : (darkMode ? '#1e3a5f' : '#eaf0fb'),
                 borderRadius: '10px', display: 'flex', alignItems: 'center',
-                justifyContent: 'center', color: item.income ? '#1D9E75' : '#0D307F', flexShrink: 0,
+                justifyContent: 'center',
+                color: item.income ? '#1D9E75' : (darkMode ? '#7aa5f5' : '#0D307F'),
+                flexShrink: 0,
               }} dangerouslySetInnerHTML={{ __html: item.svg }} />
               <div>
                 <p style={{ fontSize: '13px', fontWeight: 700, margin: 0, color: textPrimary }}>{item.name}</p>
