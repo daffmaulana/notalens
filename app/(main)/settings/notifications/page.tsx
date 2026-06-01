@@ -9,7 +9,7 @@ export default function SettingsPage() {
   const router = useRouter()
   const { setActiveNav } = useNav()
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { darkMode } = useTheme()
+  const { darkMode, toggleTheme } = useTheme()
 
   const [user, setUser] = useState({ name: '', email: '' })
   const [avatar, setAvatar] = useState<string | null>(null)
@@ -20,15 +20,7 @@ export default function SettingsPage() {
     if (stored) setUser(JSON.parse(stored))
     const savedAvatar = localStorage.getItem('avatar')
     if (savedAvatar) setAvatar(savedAvatar)
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme === 'dark') setDarkMode(true)
   }, [setActiveNav])
-
-  const handleThemeToggle = () => {
-    const next = !darkMode
-    setDarkMode(next)
-    localStorage.setItem('theme', next ? 'dark' : 'light')
-  }
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -91,7 +83,7 @@ export default function SettingsPage() {
   return (
     <div style={{ height: '100%', overflowY: 'auto', background: bg, transition: 'background 0.3s' }}>
 
-      {/* Profile Card — putih */}
+      {/* Profile Card */}
       <div style={{
         background: cardBg, padding: '28px 16px',
         textAlign: 'center', borderBottom: `1px solid ${borderColor}`,
@@ -135,16 +127,14 @@ export default function SettingsPage() {
         icon={<svg width="16" height="16" fill="none" stroke="#0D307F" strokeWidth="2" viewBox="0 0 24 24">
           <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
         </svg>}
-        label="Edit Profile"
-        sub="Change name & photo"
+        label="Edit Profile" sub="Change name & photo"
         onClick={() => router.push('/settings/edit-profile')}
       />
       <Row
         icon={<svg width="16" height="16" fill="none" stroke="#0D307F" strokeWidth="2" viewBox="0 0 24 24">
           <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" />
         </svg>}
-        label="Security"
-        sub="Change password"
+        label="Security" sub="Change password"
         onClick={() => router.push('/settings/change-password')}
       />
 
@@ -168,7 +158,7 @@ export default function SettingsPage() {
           <div style={{ fontSize: '13px', fontWeight: 600, color: textPrimary }}>Dark Mode</div>
           <div style={{ fontSize: '11px', color: textSecondary, marginTop: '2px' }}>{darkMode ? 'On' : 'Off'}</div>
         </div>
-        <div onClick={handleThemeToggle} style={{
+        <div onClick={toggleTheme} style={{
           width: '44px', height: '24px', borderRadius: '12px',
           background: darkMode ? '#0D307F' : '#e2e8f0',
           position: 'relative', cursor: 'pointer', transition: 'background 0.3s',
@@ -211,8 +201,7 @@ export default function SettingsPage() {
         icon={<svg width="16" height="16" fill="none" stroke="#0D307F" strokeWidth="2" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" />
         </svg>}
-        label="About"
-        sub="NotaLens v1.0.0"
+        label="About" sub="NotaLens v1.0.0"
       />
 
       {/* Logout */}
