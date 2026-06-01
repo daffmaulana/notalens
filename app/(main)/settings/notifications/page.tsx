@@ -11,7 +11,6 @@ export default function SettingsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { darkMode } = useTheme()
 
-  const [darkMode, setDarkMode] = useState(false)
   const [user, setUser] = useState({ name: '', email: '' })
   const [avatar, setAvatar] = useState<string | null>(null)
 
