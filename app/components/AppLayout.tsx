@@ -101,8 +101,7 @@ export const AppHeader: React.FC<HeaderProps> = ({ rightSlot }) => {
           <Image src="/logo.png" alt="NotaLens" width={28} height={28}
             style={{
               borderRadius: '8px', objectFit: 'cover',
-              filter: darkMode ? 'brightness(2) saturate(0.5)' : 'none',
-              opacity: darkMode ? 0.9 : 1,
+              filter: darkMode ? 'brightness(10) saturate(0)' : 'none',
             }} />
           <span style={{
             fontSize: '14px', fontWeight: 800, letterSpacing: '1px',

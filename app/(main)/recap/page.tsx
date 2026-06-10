@@ -4,6 +4,7 @@ import { useNav } from '@/app/components/AppLayout'
 import { useTheme } from '@/context/ThemeContext'
 import { fetchTransactions } from '@/lib/transactions-api'
 import { formatRp, formatDisplayDate } from '@/lib/amount'
+import { getToken } from '@/lib/auth'
 import type { TransactionWithItems } from '@/types'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
@@ -31,10 +32,7 @@ export default function RecapPage() {
   useEffect(() => {
     const load = async () => {
       setLoading(true)
-      const data = await fetchTransactions({
-        month: monthIndex + 1,
-        year,
-      })
+      const data = await fetchTransactions({ month: monthIndex + 1, year })
       if (data) {
         setTransactions(data.transactions)
         setTotal(data.summary.total_expenses)
@@ -51,7 +49,6 @@ export default function RecapPage() {
 
   const filteredTransactions = useMemo(() => {
     if (filter === 'All') return transactions
-
     const today = new Date()
     return transactions.filter((tx) => {
       const d = new Date(tx.transaction_date + 'T12:00:00')
@@ -78,6 +75,21 @@ export default function RecapPage() {
     tx.notes || 'Other',
     formatRp(Number(tx.total_amount)),
   ])
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Hapus transaksi ini?')) return
+
+    // TODO: sambungkan ke BE kalau endpoint sudah ada
+    // const token = getToken()
+    // const res = await fetch(`/api/transactions/${id}`, {
+    //   method: 'DELETE',
+    //   headers: { Authorization: `Bearer ${token}` },
+    // })
+    // if (!res.ok) { alert('Gagal menghapus'); return }
+
+    // Sementara: hapus dari state lokal
+    setTransactions(p => p.filter(tx => tx.transaction_id !== id))
+  }
 
   const handleExportPDF = () => {
     const doc = new jsPDF()
@@ -126,6 +138,8 @@ export default function RecapPage() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       transition: 'background 0.3s',
     }}>
+
+      {/* Month Selector */}
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         padding: '16px', background: cardBg, borderBottom: `1px solid ${borderColor}`,
@@ -141,6 +155,7 @@ export default function RecapPage() {
 
       <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
 
+        {/* Total Card */}
         <div style={{ background: '#0D307F', borderRadius: '20px', padding: '20px', color: '#fff' }}>
           <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '1px', opacity: 0.7, marginBottom: '8px' }}>
             TOTAL PENGELUARAN
@@ -150,6 +165,7 @@ export default function RecapPage() {
           </div>
         </div>
 
+        {/* Filter */}
         <div style={{ display: 'flex', gap: '8px' }}>
           {(['All', 'This Week', 'This Month'] as const).map((f) => (
             <button key={f} onClick={() => setFilter(f)} style={{
@@ -161,6 +177,7 @@ export default function RecapPage() {
           ))}
         </div>
 
+        {/* Export Buttons */}
         <div style={{ display: 'flex', gap: '8px' }}>
           <button onClick={handleExportPDF} style={{
             flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -168,6 +185,10 @@ export default function RecapPage() {
             background: cardBg, border: `1px solid ${borderColor}`,
             fontSize: '11px', fontWeight: 700, color: '#dc2626', cursor: 'pointer',
           }}>
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
             Export PDF
           </button>
           <button onClick={handleExportExcel} style={{
@@ -176,10 +197,15 @@ export default function RecapPage() {
             background: cardBg, border: `1px solid ${borderColor}`,
             fontSize: '11px', fontWeight: 700, color: '#16a34a', cursor: 'pointer',
           }}>
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
             Export Excel
           </button>
         </div>
 
+        {/* Category Breakdown */}
         <div style={{ background: cardBg, borderRadius: '16px', padding: '16px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: textPrimary, marginBottom: '14px' }}>
             Category Breakdown
@@ -194,7 +220,9 @@ export default function RecapPage() {
                 <div key={cat.name}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                     <span style={{ fontSize: '12px', color: textSecondary }}>{cat.name}</span>
-                    <span style={{ fontSize: '12px', fontWeight: 700, color: darkMode ? '#7aa5f5' : '#0D307F' }}>{formatRp(cat.amount)}</span>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: darkMode ? '#7aa5f5' : '#0D307F' }}>
+                      {formatRp(cat.amount)}
+                    </span>
                   </div>
                   <div style={{ height: '4px', background: borderColor, borderRadius: '2px' }}>
                     <div style={{
@@ -211,6 +239,7 @@ export default function RecapPage() {
           )}
         </div>
 
+        {/* Recent Transactions */}
         <div style={{ background: cardBg, borderRadius: '16px', padding: '16px' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: textPrimary, marginBottom: '14px' }}>
             Recent Transactions
@@ -227,7 +256,7 @@ export default function RecapPage() {
                   alignItems: 'center', paddingBottom: '12px',
                   borderBottom: `1px solid ${borderColor}`,
                 }}>
-                  <div>
+                  <div style={{ flex: 1 }}>
                     <div style={{ fontSize: '13px', fontWeight: 700, color: textPrimary }}>{tx.merchant_name}</div>
                     <div style={{ fontSize: '11px', color: textSecondary, marginTop: '2px' }}>
                       {formatDisplayDate(tx.transaction_date)}
@@ -238,8 +267,22 @@ export default function RecapPage() {
                       fontSize: '10px', fontWeight: 700, padding: '2px 8px', borderRadius: '10px',
                     }}>{tx.notes || 'Other'}</div>
                   </div>
-                  <div style={{ fontSize: '13px', fontWeight: 800, color: darkMode ? '#7aa5f5' : '#0D307F' }}>
-                    {formatRp(Number(tx.total_amount))}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: darkMode ? '#7aa5f5' : '#0D307F' }}>
+                      {formatRp(Number(tx.total_amount))}
+                    </div>
+                    <div
+                      onClick={() => handleDelete(tx.transaction_id)}
+                      style={{
+                        width: '28px', height: '28px', borderRadius: '8px',
+                        background: '#fef2f2', display: 'flex', alignItems: 'center',
+                        justifyContent: 'center', cursor: 'pointer', flexShrink: 0,
+                      }}
+                    >
+                      <svg width="14" height="14" fill="none" stroke="#dc2626" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
               ))}

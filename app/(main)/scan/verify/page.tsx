@@ -298,26 +298,57 @@ const VerifyScanPage = () => {
           </div>
         </div>
 
-        {/* Line items from AI */}
-        {items.length > 0 && (
-          <div style={{ background: cardBg, borderRadius: '14px', padding: '14px' }}>
+      {/* Line items from AI */}
+      {items.length > 0 && (
+        <div style={{ background: cardBg, borderRadius: '14px', padding: '14px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
             <label style={{ fontSize: '10px', fontWeight: 700, color: textSecondary, letterSpacing: '0.8px', textTransform: 'uppercase' }}>
               Items ({items.length})
             </label>
-            <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {items.map((item, i) => (
-                <div key={i} style={{
-                  display: 'flex', justifyContent: 'space-between', gap: '8px',
-                  fontSize: '12px', color: textPrimary, paddingBottom: '8px',
-                  borderBottom: i < items.length - 1 ? `1px solid ${borderColor}` : 'none',
-                }}>
-                  <span style={{ fontWeight: 600, flex: 1 }}>{item.nama_item}</span>
-                  <span style={{ color: textSecondary, whiteSpace: 'nowrap' }}>{item.harga ?? '—'}</span>
-                </div>
-              ))}
-            </div>
+            <button onClick={() => setItems(p => [...p, { nama_item: '', harga: '' }])} style={{
+              background: '#eff6ff', color: '#0D307F', border: 'none',
+              borderRadius: '8px', padding: '4px 10px', fontSize: '11px',
+              fontWeight: 700, cursor: 'pointer',
+            }}>+ Add</button>
           </div>
-        )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {items.map((item, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                paddingBottom: '8px',
+                borderBottom: i < items.length - 1 ? `1px solid ${borderColor}` : 'none',
+              }}>
+                <input
+                  value={item.nama_item}
+                  onChange={e => setItems(p => p.map((it, idx) => idx === i ? { ...it, nama_item: e.target.value } : it))}
+                  placeholder="Nama item"
+                  style={{
+                    flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                    fontSize: '12px', fontWeight: 600, color: textPrimary, padding: 0,
+                  }}
+                />
+                <input
+                  value={item.harga ?? ''}
+                  onChange={e => setItems(p => p.map((it, idx) => idx === i ? { ...it, harga: e.target.value } : it))}
+                  placeholder="Harga"
+                  style={{
+                    width: '80px', border: 'none', outline: 'none', background: 'transparent',
+                    fontSize: '12px', color: textSecondary, padding: 0, textAlign: 'right',
+                  }}
+                />
+                <div onClick={() => setItems(p => p.filter((_, idx) => idx !== i))} style={{
+                  cursor: 'pointer', color: '#dc2626', flexShrink: 0,
+                  display: 'flex', alignItems: 'center',
+                }}>
+                  <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       </div>
 
       {/* Buttons */}
