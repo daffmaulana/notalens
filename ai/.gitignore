@@ -1,0 +1,32 @@
+
+
+# Dataset
+datasets/
+
+# Training output
+runs/
+
+# Cache
+*.cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+env/
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+.env
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+runs/
+*.zip
