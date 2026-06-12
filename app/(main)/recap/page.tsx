@@ -77,19 +77,29 @@ export default function RecapPage() {
   ])
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Hapus transaksi ini?')) return
+  if (!confirm('Hapus transaksi ini?')) return
 
-    // TODO: sambungkan ke BE kalau endpoint sudah ada
-    // const token = getToken()
-    // const res = await fetch(`/api/transactions/${id}`, {
-    //   method: 'DELETE',
-    //   headers: { Authorization: `Bearer ${token}` },
-    // })
-    // if (!res.ok) { alert('Gagal menghapus'); return }
+  const token = getToken()
+  if (!token) { alert('Silakan login ulang'); return }
 
-    // Sementara: hapus dari state lokal
+  try {
+    const res = await fetch(`/api/transaction/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+
+    if (!res.ok) {
+      const data = await res.json()
+      alert(data.error || 'Gagal menghapus')
+      return
+    }
+
+    // Hapus dari state
     setTransactions(p => p.filter(tx => tx.transaction_id !== id))
+  } catch {
+    alert('Terjadi kesalahan. Coba lagi.')
   }
+}
 
   const handleExportPDF = () => {
     const doc = new jsPDF()

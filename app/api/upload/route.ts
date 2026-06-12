@@ -7,22 +7,14 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { getTokenFromHeader, verifyToken } from '@/lib/jwt';
-import { ApiError, UploadResponse } from '@/types';
+import { ApiError } from '@/types';
 
 const FASTAPI_URL = process.env.FASTAPI_URL ?? 'http://localhost:8000';
-
-function fastApiErrorMessage(body: unknown, fallback: string): string {
-  if (typeof body === 'object' && body !== null && 'detail' in body) {
-    const detail = (body as { detail: unknown }).detail;
-    if (typeof detail === 'string') return detail;
-  }
-  return fallback;
-}
 
 export async function POST(req: NextRequest) {
   // --- Auth check ---
   const token = getTokenFromHeader(req.headers.get('authorization'));
-  const payload = token ? await verifyToken(token) : null;
+  const payload = token ? verifyToken(token) : null;
 
   if (!payload) {
     return NextResponse.json<ApiError>(
@@ -61,31 +53,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // --- Forward ke FastAPI (NotaLens AI: POST /ekstrak-struk) ---
+    // --- Forward ke FastAPI ---
     const forwardForm = new FormData();
     forwardForm.append('file', file);
+    forwardForm.append('user_id', String(payload.user_id)); // kirim user_id ke FastAPI
 
     const fastApiResponse = await fetch(`${FASTAPI_URL}/ekstrak-struk`, {
       method: 'POST',
       body: forwardForm,
     });
 
-    const result = await fastApiResponse.json().catch(() => null);
-
     if (!fastApiResponse.ok) {
-      console.error('FastAPI error:', result);
+      const errText = await fastApiResponse.text();
+      console.error('FastAPI error:', errText);
       return NextResponse.json<ApiError>(
-        {
-          error: fastApiErrorMessage(
-            result,
-            'Gagal memproses struk, coba lagi'
-          ),
-        },
-        { status: fastApiResponse.status >= 500 ? 502 : fastApiResponse.status }
+        { error: 'Gagal memproses struk, coba lagi' },
+        { status: 502 }
       );
     }
 
-    return NextResponse.json<UploadResponse>({
+    const result = await fastApiResponse.json();
+
+    return NextResponse.json({
       message: 'Struk berhasil diproses',
       data: result,
     });
@@ -97,3 +86,10 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+// Tingkatkan limit body size untuk upload file
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};

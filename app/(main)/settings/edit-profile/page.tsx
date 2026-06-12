@@ -43,13 +43,40 @@ const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   reader.readAsDataURL(file)
 }
 
-  const handleSave = () => {
+  const handleSave = async () => {
+  const token = localStorage.getItem('token')
+  if (!token) { alert('Silakan login ulang'); return }
+
+  try {
+    const res = await fetch('/api/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ name }),
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      alert(data.error || 'Gagal update profil')
+      return
+    }
+
+    // Update localStorage dengan data terbaru dari server
     const stored = localStorage.getItem('user')
     const user = stored ? JSON.parse(stored) : {}
-    localStorage.setItem('user', JSON.stringify({ ...user, name, email }))
+    localStorage.setItem('user', JSON.stringify({ ...user, name: data.user.name }))
+    window.dispatchEvent(new Event('avatarUpdated'))
+
     setSaved(true)
     setTimeout(() => { setSaved(false); router.push('/settings') }, 1000)
+
+  } catch {
+    alert('Terjadi kesalahan. Coba lagi.')
   }
+}
 
   return (
     <div style={{
