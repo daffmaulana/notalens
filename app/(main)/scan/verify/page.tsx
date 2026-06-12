@@ -266,7 +266,6 @@ const VerifyScanPage = () => {
             Date
           </label>
           <input value={formData.date} onChange={e => setFormData(p => ({ ...p, date: e.target.value }))}
-            placeholder="Tanggal transaksi"
             style={{ width: '100%', boxSizing: 'border-box', border: 'none', outline: 'none',
               fontSize: '14px', fontWeight: 600, color: textPrimary, background: 'transparent', marginTop: '6px', padding: 0 }} />
         </div>
