@@ -79,7 +79,7 @@ export async function GET(req: NextRequest, { params }: Params) {
   let reportIndex = 1;
   for (const tx of transactions ?? []) {
     const reportNumber = `EVT-${String(eventId).padStart(4, '0')}-${String(reportIndex).padStart(3, '0')}`;
-    const user = tx.users as { name: string; email: string } | null;
+    const user = (Array.isArray(tx.users) ? tx.users[0] : tx.users) as { name: string; email: string } | null;
     const items = tx.transaction_items as Array<{ item_name: string; quantity: number | null; price: number }>;
 
     if (!items || items.length === 0) {
