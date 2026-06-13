@@ -207,25 +207,29 @@ export const PhoneLayout: React.FC<PhoneLayoutProps> = ({ children, headerProps 
       transition: 'background 0.3s',
     }}>
       <div style={{
-        width: '100%', maxWidth: '430px', minHeight: '100vh',
+        width: '100%', maxWidth: '430px',
+        height: '100vh',           /* fixed viewport height */
         background: screenBg, display: 'flex', flexDirection: 'column',
         boxShadow: '0 0 40px rgba(0,0,0,0.12)', transition: 'background 0.3s',
+        overflow: 'hidden',        /* prevent the shell itself from scrolling */
       }}>
-        <AppHeader {...headerProps} />
+        <AppHeader {...headerProps} />  {/* flexShrink: 0 already set */}
         {fullBleed ? (
           <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
             {children}
           </div>
         ) : (
           <div style={{
-            flex: 1, overflowY: 'auto', padding: '14px 14px 8px',
+            flex: 1,               /* fills all space between header and navbar */
+            overflowY: 'auto',     /* content scrolls here */
+            padding: '14px 14px 8px',
             scrollbarWidth: 'none', msOverflowStyle: 'none',
           } as React.CSSProperties}>
             <style>{`div::-webkit-scrollbar { display: none; }`}</style>
             {children}
           </div>
         )}
-        <AppNavbar />
+        <AppNavbar />  {/* flexShrink: 0 already set */}
       </div>
     </div>
   )

@@ -116,7 +116,7 @@ export default function EditProfilePage() {
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </div>
-        <span style={{ fontSize: '14px', fontWeight: 800, color: '#0D307F', letterSpacing: '0.5px' }}>Edit Profile</span>
+        <span style={{ fontSize: '14px', fontWeight: 800, color: '#0D307F', letterSpacing: '0.5px' }}>Edit Profil</span>
       </div>
 
       {/* Avatar */}

@@ -110,7 +110,7 @@ export default function SettingsPage() {
         icon={<svg width="16" height="16" fill="none" stroke="#0D307F" strokeWidth="2" viewBox="0 0 24 24">
           <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
         </svg>}
-        label="Edit Profile" sub="Ubah nama & foto"
+        label="Edit Profil" sub="Ubah nama & foto"
         onClick={() => router.push('/settings/edit-profile')}
       />
       <Row
