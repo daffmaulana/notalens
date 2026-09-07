@@ -11,7 +11,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-000000?style=flat&logo=nextdotjs&logoColor=white" alt="Next.js" />
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white" alt="Supabase" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white" alt="PostgreSQL" />
   <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white" alt="Python" />
   <img src="https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white" alt="FastAPI" />
 </p>
@@ -21,7 +21,6 @@
   <a href="#ai-pipeline">AI Pipeline</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#getting-started">Getting Started</a> •
-  <a href="#project-structure">Project Structure</a>
 </p>
 
 ---
@@ -41,6 +40,40 @@ The app helps users:
 Receipt Photo → AI Extraction → Review & Edit → Save Transaction → Dashboard & Reporting
 ```
 
+This project was developed as a submission for the capstone project of the AI Intensive Course by Pijak Dicoding x IBM SkillsBuild
+Created by [Ahmad](https://github.com/AhmadSabani475), [Bima](https://github.com/ABimantara), [Daffa ](https://github.com/daffmaulana), [Kholilah](https://github.com/kholilah78), [Selvi](https://github.com/selvi-ra)
+
+---
+
+## Demo
+ 
+https://github.com/user-attachments/assets/e6c2213b-57ba-4bbd-a389-eaaa4ab299bc
+
+Full Demo [Here](https://www.youtube.com/watch?v=KexCd-TetH0)
+<table>
+  <tr>
+    <td align="center" width="20%">
+      <img src="https://github.com/user-attachments/assets/cde12563-a863-4e7f-8786-8a47f6db7486" width="160" alt="Recap" /><br />
+      <sub><strong>Recap</strong></sub>
+    </td>
+    <td align="center" width="20%">
+      <img src="https://github.com/user-attachments/assets/8f14563a-ffe7-4fb0-923e-5326cc54143b" width="160" alt="Verif Scan" /><br />
+      <sub><strong>Verif Scan</strong></sub>
+    </td>
+    <td align="center" width="20%">
+      <img src="https://github.com/user-attachments/assets/91d5e5d3-33ce-4c55-a91b-853813e97c38" width="160" alt="Detail Receipt" /><br />
+      <sub><strong>Detail Receipt</strong></sub>
+    </td>
+    <td align="center" width="20%">
+      <img src="https://github.com/user-attachments/assets/8b39d822-2cf6-41ba-9c6a-faa8d6f3bd7f" width="160" alt="Workspace" /><br />
+      <sub><strong>Workspace</strong></sub>
+    </td>
+    <td align="center" width="20%">
+      <img src="https://github.com/user-attachments/assets/5a72b9f1-b1bc-4454-a3eb-6cdb2d046c80" width="160" alt="Manage Workspace" /><br />
+      <sub><strong>Manage Workspace</strong></sub>
+    </td>
+  </tr>
+</table>
 ---
 
 ## Features
@@ -165,41 +198,6 @@ This architecture keeps the frontend experience lightweight while shifting heavy
 
 ---
 
-## Project Structure
-
-```text
-notalens/
-├── app/
-│   ├── (auth)/
-│   ├── (main)/
-│   ├── api/
-│   └── globals.css
-├── ai/
-│   ├── app.py
-│   ├── Dockerfile
-│   ├── README.md
-│   ├── requirements.txt
-│   └── models/
-├── components/
-├── context/
-├── docs/
-├── lib/
-├── public/
-├── supabase/
-│   └── schema.sql
-├── types/
-├── .env.example
-├── eslint.config.mjs
-├── middleware.ts
-├── next.config.ts
-├── next-env.d.ts
-├── package.json
-├── postcss.config.mjs
-├── tsconfig.json
-├── README.md
-└── ...
-```
-
 ---
 
 ## Getting Started
@@ -255,9 +253,8 @@ Visit:
 http://localhost:3000
 ```
 
----
 
-## Available Scripts
+### Available Scripts
 
 ```bash
 npm run dev        # start Next.js development server
@@ -269,82 +266,6 @@ npm run dev:all    # run frontend + AI service concurrently
 ```
 
 ---
-
-## Database & Schema
-
-The project uses Supabase as the primary database and storage provider. The schema can be found in:
-
-- [supabase/schema.sql](supabase/schema.sql)
-
-The main database entities include:
-- users
-- workspaces
-- workspace_members
-- transactions
-- transaction_items
-
-These structures support both personal expense tracking and collaborative workspace usage.
-
----
-
-## Core User Flows
-
-### Personal expense tracking
-1. Open Scan page
-2. Capture a receipt from camera or upload an image
-3. AI extracts transaction details
-4. Review and edit extracted data
-5. Save as personal expense
-6. View recap and summary in dashboard
-
-### Workspace collaboration
-1. Create or join a workspace using a unique code
-2. Scan a receipt from within the workspace
-3. Save transaction to the workspace
-4. Review all transactions in one place
-5. Verify eligible transactions as workspace creator
-
----
-
-## Security & Access Control
-
-- JWT-based user authentication
-- protected API routes for authenticated access
-- workspace-specific authorization rules
-- creator-only verification and export permissions
-- transaction ownership checks before modification or deletion
-
----
-
-## Notes
-
-This project is built as a full-stack application with a clear separation between:
-- frontend UI and business flow
-- backend API and authorization
-- database persistence
-- AI-powered extraction service
-
-It is well-suited for future expansion into:
-- budget alerts
-- recurring expenses
-- analytics dashboard
-- export automation
-- multi-tenant team administration
-
----
-
-## Research / Development Context
-
-NotaLens is positioned as an intelligent financial management application that combines expense tracking, collaborative workspaces, and AI-assisted receipt processing into a single workflow.
-
-The project demonstrates how a modern web app can combine:
-- user-centered product experience
-- structured financial data models
-- collaborative team features
-- AI automation for document understanding
-
----
-
 <p align="center">
   <strong>NotaLens</strong><br>
   Turn receipts into clarity.
